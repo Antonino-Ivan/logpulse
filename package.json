@@ -1,0 +1,56 @@
+{
+  "name": "logpulse",
+  "version": "1.0.0",
+  "description": "Percentili di latenza, tasso di errore e forma del traffico da un file di log. Zero dipendenze a runtime.",
+  "type": "module",
+  "bin": {
+    "logpulse": "dist/index.js"
+  },
+  "main": "dist/cli.js",
+  "types": "dist/cli.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/cli.d.ts",
+      "import": "./dist/cli.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test \"test/*.test.js\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "logs",
+    "percentile",
+    "latency",
+    "observability",
+    "ndjson",
+    "nginx",
+    "cli",
+    "devops"
+  ],
+  "author": "Antonino Ivan Iannì",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Antonino-Ivan/logpulse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Antonino-Ivan/logpulse/issues"
+  },
+  "homepage": "https://github.com/Antonino-Ivan/logpulse#readme",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

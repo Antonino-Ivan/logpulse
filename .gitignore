@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.tsbuildinfo
+npm-debug.log*
+.DS_Store
+
+# Log reali: il repository contiene solo gli esempi generati in examples/.
+*.log
+!examples/*.log

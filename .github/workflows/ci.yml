@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test su Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["20.x", "22.x", "24.x"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # Nessuna dipendenza a runtime: install serve solo per TypeScript e i tipi.
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Verifica la riga di comando sugli esempi
+        run: |
+          node dist/index.js --version
+          node dist/index.js examples/app.ndjson --json > /dev/null
+          node dist/index.js examples/access.log --top 3 > /dev/null
+
+      - name: Le soglie devono far fallire il comando
+        run: |
+          if node dist/index.js examples/app.ndjson --max-p95 1 --quiet > /dev/null; then
+            echo "atteso exit != 0 con soglia p95 a 1 ms"
+            exit 1
+          fi
